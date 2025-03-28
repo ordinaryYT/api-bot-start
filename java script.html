@@ -1,35 +1,31 @@
-// api/start-bots.js
-import FNLB from 'fnlb';
+const express = require('express');
+const FNLB = require('fnlb'); // Assuming FNLB package is available
+const app = express();
+const port = 3000;
 
-export default async (req, res) => {
-    // Check if the request method is POST
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method Not Allowed' });
-    }
+app.use(express.json()); // To parse JSON data
+app.use(express.static('public')); // To serve the HTML files
 
-    const { apiToken } = req.body;
-
-    // Ensure the API token is provided
-    if (!apiToken) {
-        return res.status(400).json({ error: 'API token is required' });
-    }
-
+// Start bots route
+app.post('/start-bots', async (req, res) => {
     try {
-        console.log('Received API token:', apiToken); // Log the received API token
-
-        // Initialize FNLB instance and start the bots
         const fnlb = new FNLB();
+        
+        // Your FNLB start configuration
         await fnlb.start({
-            apiToken: apiToken,
-            botsPerShard: 10,
+            apiToken: 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6',  // Replace with your actual FNLB API token
+            botsPerShard: 30, // Number of bots to start
+            numberOfShards: 1 // Number of shards (subprocesses)
         });
 
-        // Send success response
-        res.status(200).json({ message: 'Bots started successfully' });
+        res.json({ message: "Bots started successfully!" });
     } catch (error) {
-        console.error('Error starting bots:', error);
-
-        // Handle the error and return a 500 status code with the error message
-        res.status(500).json({ error: 'Failed to start bots', details: error.message });
+        console.error("Error starting bots:", error);
+        res.status(500).json({ error: "Failed to start bots" });
     }
-};
+});
+
+// Serve the static HTML and assets
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+});

@@ -111,7 +111,7 @@
             emailjs.init("Js8Z6hkbFnkcttBbT"); // Replace with your EmailJS user ID
         })();
 
-        async function sendMessage() {
+        function sendMessage() {
             let timestamp = new Date().toLocaleString();
             let logEntry = "Start button clicked at: " + timestamp;
 
@@ -130,26 +130,17 @@
                 alert("Failed to send message: " + JSON.stringify(error));
             });
 
-            // Send a request to the backend serverless function
-            const apiToken = "DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6"; // Replace with your actual API token
-            try {
-                const response = await fetch('/api/start-bots', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ apiToken }),
+            // Start the bots by making a request to the server
+            fetch('/start-bots', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Bots started successfully", data);
+                    alert("Bots are starting!");
+                })
+                .catch(error => {
+                    console.error("Error starting bots:", error);
+                    alert("Failed to start bots.");
                 });
-
-                const data = await response.json();
-                if (response.ok) {
-                    alert("Bots started successfully!");
-                } else {
-                    alert("Failed to start bots: " + data.error);
-                }
-            } catch (error) {
-                alert("Error occurred: " + error.message);
-            }
         }
     </script>
 </head>
