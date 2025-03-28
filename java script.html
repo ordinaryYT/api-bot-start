@@ -1,31 +1,52 @@
 const express = require('express');
-const FNLB = require('fnlb'); // Assuming FNLB package is available
+const FNLB = require('fnlb');
 const app = express();
 const port = 3000;
 
-app.use(express.json()); // To parse JSON data
-app.use(express.static('public')); // To serve the HTML files
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Serve static files (HTML, CSS, etc.)
+app.use(express.static('public')); 
 
 // Start bots route
 app.post('/start-bots', async (req, res) => {
+    const { apiToken = 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6', botsPerShard = 19, numberOfShards = 1 } = req.body;
+
+    if (!apiToken) {
+        return res.status(400).json({ error: "API token is required" });
+    }
+
     try {
         const fnlb = new FNLB();
-        
-        // Your FNLB start configuration
-        await fnlb.start({
-            apiToken: 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6',  // Replace with your actual FNLB API token
-            botsPerShard: 30, // Number of bots to start
-            numberOfShards: 1 // Number of shards (subprocesses)
+
+        // Starting bots with the provided configuration
+        const response = await fnlb.start({
+            apiToken,  // API token to access FNLB
+            botsPerShard,  // Number of bots per shard
+            numberOfShards,  // Number of shards (subprocesses)
         });
 
-        res.json({ message: "Bots started successfully!" });
+        console.log('Bots started successfully:', response);
+
+        // Send success response to the frontend
+        res.json({ message: 'Bots started successfully!', response });
     } catch (error) {
-        console.error("Error starting bots:", error);
-        res.status(500).json({ error: "Failed to start bots" });
+        console.error('Error starting bots:', error);
+
+        // Send error response to the frontend
+        res.status(500).json({
+            error: `Failed to start bots: ${error.message || error}`,
+        });
     }
 });
 
-// Serve the static HTML and assets
+// Serve the frontend HTML page when navigating to the root
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+// Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
