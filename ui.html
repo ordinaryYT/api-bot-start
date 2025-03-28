@@ -1,0 +1,40 @@
+async function sendMessage() {
+    let timestamp = new Date().toLocaleString();
+    let logEntry = "Start button clicked at: " + timestamp;
+
+    // Save log entry to localStorage
+    let logs = JSON.parse(localStorage.getItem("logs")) || [];
+    logs.push(logEntry);
+    localStorage.setItem("logs", JSON.stringify(logs));
+
+    // Send email using EmailJS
+    emailjs.send("service_lglu81w", "template_zplkxfb", {
+        to_email: "baileyksmith2010@gmail.com",
+        message: logEntry
+    }).then(function(response) {
+        alert("Message sent successfully!");
+    }, function(error) {
+        alert("Failed to send message: " + JSON.stringify(error));
+    });
+
+    // Send a request to the backend serverless function
+    const apiToken = "DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6"; // Replace with your actual API token
+    try {
+        const response = await fetch('/api/start-bots', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ apiToken }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert("Bots started successfully!");
+        } else {
+            alert("Failed to start bots: " + data.error);
+        }
+    } catch (error) {
+        alert("Error occurred: " + error.message);
+    }
+}

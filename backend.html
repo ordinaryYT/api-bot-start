@@ -1,0 +1,35 @@
+// api/start-bots.js
+import FNLB from 'fnlb';
+
+export default async (req, res) => {
+    // Check if the request method is POST
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method Not Allowed' });
+    }
+
+    const { apiToken } = req.body;
+
+    // Ensure the API token is provided
+    if (!apiToken) {
+        return res.status(400).json({ error: 'API token is required' });
+    }
+
+    try {
+        console.log('Received API token:', apiToken); // Log the received API token
+
+        // Initialize FNLB instance and start the bots
+        const fnlb = new FNLB();
+        await fnlb.start({
+            apiToken: apiToken,
+            botsPerShard: 10,
+        });
+
+        // Send success response
+        res.status(200).json({ message: 'Bots started successfully' });
+    } catch (error) {
+        console.error('Error starting bots:', error);
+
+        // Handle the error and return a 500 status code with the error message
+        res.status(500).json({ error: 'Failed to start bots', details: error.message });
+    }
+};
