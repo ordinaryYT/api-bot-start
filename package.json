@@ -1,0 +1,15 @@
+{
+  "name": "my-vercel-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "fnlb": "^latest"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
