@@ -130,17 +130,17 @@
                 alert("Failed to send message: " + JSON.stringify(error));
             });
 
-            // Start the bots by making a request to the server
-            fetch('/start-bots', { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Bots started successfully", data);
-                    alert("Bots are starting!");
-                })
-                .catch(error => {
-                    console.error("Error starting bots:", error);
-                    alert("Failed to start bots.");
-                });
+            // Make HTTP request to start the bots
+            fetch('/api/startBots', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);  // Alert the response from the backend (success or error)
+            })
+            .catch(error => {
+                alert("Failed to start bots: " + error.message);
+            });
         }
     </script>
 </head>
