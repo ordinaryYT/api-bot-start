@@ -1,9 +1,10 @@
-// /api/startBots.js
 const FNLB = require('fnlb');
 
 module.exports = async (req, res) => {
+  // Ensure that the request method is POST
   if (req.method === 'POST') {
     try {
+      // Initialize FNLB
       const fnlb = new FNLB();
 
       // Start 20 bots (2 shards, 10 bots per shard)
@@ -13,11 +14,18 @@ module.exports = async (req, res) => {
         botsPerShard: 10
       });
 
+      // Send success response as JSON
       res.status(200).json({ message: 'Bots started successfully!' });
+
     } catch (error) {
-      res.status(500).json({ error: 'Failed to start bots: ' + error.message });
+      // Log the error for debugging (optional)
+      console.error('Error starting bots:', error);
+
+      // Send error response as JSON with details
+      res.status(500).json({ error: 'Failed to start bots', details: error.message });
     }
   } else {
+    // Handle unsupported methods (only POST is allowed)
     res.status(405).json({ error: 'Method Not Allowed' });
   }
 };

@@ -106,6 +106,28 @@
             color: #a0a0a0;
         }
     </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <p>Click the button below to start the bots. (might take 5-20 minutes).</p>
+        <button class="start-button" onclick="sendMessage()">Start</button>
+
+        <!-- Bots Section -->
+        <div class="bots-section">
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot1</div><div class="bot-description">Drops Tilted Towers every time. Still dies first.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot2</div><div class="bot-description">Builds a mansion in 2 seconds. Forgets to add doors.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot3</div><div class="bot-description">Carries 10 medkits. Still dies to fall damage.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot4</div><div class="bot-description">Camps in a bush. Wins by doing absolutely nothing.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot5</div><div class="bot-description">Always has a golden scar. Misses every shot.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot6</div><div class="bot-description">Dances after every kill. Gets sniped mid-emote.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot7</div><div class="bot-description">Rides a shopping cart into the storm. No regrets.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot8</div><div class="bot-description">Steals your loot. Blames it on lag.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot9</div><div class="bot-description">Always revives you. In the middle of a firefight.</div></div>
+            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot10</div><div class="bot-description">Throws grenades like confetti. Accidentally blows itself up.</div></div>
+        </div>
+    </div>
+
     <script>
         (function() {
             emailjs.init("Js8Z6hkbFnkcttBbT"); // Replace with your EmailJS user ID
@@ -134,35 +156,18 @@
             fetch('/api/startBots', {
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(response => response.json())  // Parse the response as JSON
             .then(data => {
-                alert(data.message);  // Alert the response from the backend (success or error)
+                if (data.message) {
+                    alert(data.message);  // Show success message
+                } else if (data.error) {
+                    alert("Error: " + data.error);  // Show error message
+                }
             })
             .catch(error => {
-                alert("Failed to start bots: " + error.message);
+                alert("Failed to start bots: " + error.message);  // Catch any network errors
             });
         }
     </script>
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome</h1>
-        <p>Click the button below to start the bots. (might take 5-20 minutes).</p>
-        <button class="start-button" onclick="sendMessage()">Start</button>
-
-        <!-- Bots Section -->
-        <div class="bots-section">
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot1</div><div class="bot-description">Drops Tilted Towers every time. Still dies first.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot2</div><div class="bot-description">Builds a mansion in 2 seconds. Forgets to add doors.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot3</div><div class="bot-description">Carries 10 medkits. Still dies to fall damage.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot4</div><div class="bot-description">Camps in a bush. Wins by doing absolutely nothing.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot5</div><div class="bot-description">Always has a golden scar. Misses every shot.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot6</div><div class="bot-description">Dances after every kill. Gets sniped mid-emote.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot7</div><div class="bot-description">Rides a shopping cart into the storm. No regrets.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot8</div><div class="bot-description">Steals your loot. Blames it on lag.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot9</div><div class="bot-description">Always revives you. In the middle of a firefight.</div></div>
-            <div class="bot-card"><div class="bot-icon"></div><div class="bot-name">OGsbot10</div><div class="bot-description">Throws grenades like confetti. Accidentally blows itself up.</div></div>
-        </div>
-    </div>
 </body>
 </html>
